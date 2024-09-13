@@ -1,1 +1,29 @@
-<p>matches works!</p>
+<mat-card>
+        
+    <mat-card-header>
+
+    </mat-card-header>
+    <mat-card-content>
+        <table mat-table [dataSource]="matches" class="mat-elevation-z8">
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <th mat-header-cell *matCellDef="let match">{{match.date | date}}</th>
+            </ng-container>
+
+            <!-- Adversary Column -->
+            <ng-container matColumnDef="adversary">
+                <th mat-header-cell *matHeaderCellDef>Adversary</th>
+                <th mat-header-cell *matCellDef="let match">{{match.adversary}}</th>
+            </ng-container>
+
+            <!-- Results Column -->
+            <ng-container matColumnDef="result">
+                <th mat-header-cell *matHeaderCellDef>Results</th>
+                <th mat-header-cell *matCellDef="let match">{{getResult(match.sets)}}</th>
+            </ng-container>
+        </table>
+
+    </mat-card-content>
+</mat-card>
