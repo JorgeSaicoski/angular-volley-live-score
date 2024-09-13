@@ -38,7 +38,7 @@ export class MatchesComponent {
     }
 
   ]
-  getResults(sets: { win: boolean }[]): string {
+  getResult(sets: { win: boolean }[]): string {
     const wins = sets.filter(set => set.win).length;
     const losses = sets.filter(set => !set.win).length;
 

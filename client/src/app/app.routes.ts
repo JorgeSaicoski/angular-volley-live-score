@@ -9,6 +9,7 @@ export const routes: Routes = [
     },
     {
       path: '**',
-      redirectTo: '/matches'
+      redirectTo: '/matches',
+      pathMatch: 'full'
     }
   ];
