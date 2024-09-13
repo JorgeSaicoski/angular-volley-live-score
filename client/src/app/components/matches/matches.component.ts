@@ -1,17 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { Match } from '@interfaces/match';
 import { MatchesService } from '@service/matches.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateComponent } from './create/create.component';
+import { first, firstValueFrom } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
 @Component({
   selector: 'app-matches',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule],
+  imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule, MatButtonModule],
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss'
 })
@@ -23,7 +27,8 @@ export class MatchesComponent implements AfterViewInit{
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
 
-  constructor(private matchesService: MatchesService){};
+  dialog = inject(MatDialog)
+  matchesService = inject(MatchesService)
 
   ngAfterViewInit(){
     this.loadMatches();
@@ -47,6 +52,13 @@ export class MatchesComponent implements AfterViewInit{
     } catch (error) {
       console.error('Error loading matches', error);
     }
+  }
+
+  async openCreateMatch(){
+    console.log("openDialog")
+    const newMatch$ = this.dialog.open(CreateComponent).afterClosed();
+    console.log(await firstValueFrom(newMatch$))
+    //this.matches.push(await firstValueFrom(newMatch$)) 
   }
 
 
