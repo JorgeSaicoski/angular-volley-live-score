@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { Match } from '@interfaces/match';
 
 
@@ -9,12 +10,12 @@ import { Match } from '@interfaces/match';
 @Component({
   selector: 'app-matches',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatTableModule],
+  imports: [CommonModule, MatCardModule, MatTableModule, MatPaginatorModule],
   templateUrl: './matches.component.html',
   styleUrl: './matches.component.scss'
 })
-export class MatchesComponent {
-  displayedColumns: string[] = ['date', 'adversary', 'result']
+export class MatchesComponent implements AfterViewInit{
+
   matches: Match[] = [
     {
       id: 1,
@@ -36,13 +37,25 @@ export class MatchesComponent {
       matchDate: new Date(),
       adversary: "CDB",
     }
-
   ]
+
+  displayedColumns: string[] = ['date', 'adversary', 'result']
+
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
+
+  ngAfterViewInit(){
+    this.dataSource.paginator = this.paginator
+  }
+  
+  dataSource = new MatTableDataSource<Match>(this.matches)
+
   getResult(sets: { win: boolean }[]): string {
     const wins = sets.filter(set => set.win).length;
     const losses = sets.filter(set => !set.win).length;
 
     return wins > losses ? `win by ${wins}x${losses}` : `lose by ${losses}x${wins}`;
   }
+
+
 
 }
