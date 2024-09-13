@@ -3,14 +3,15 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '@env';
 import { GetMatchesResponse } from '@interfaces/getMatchesResponse';
 import { Match } from '@interfaces/match';
-import {firstValueFrom, Observable} from "rxjs";
+import {firstValueFrom} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchesService {
 
-  http = inject(HttpClient)
+  constructor(private http: HttpClient){}
+
 
   env = environment
 

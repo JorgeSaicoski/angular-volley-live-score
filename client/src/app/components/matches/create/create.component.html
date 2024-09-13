@@ -1,1 +1,28 @@
-<p>create works!</p>
+<form>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                Create New Match
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label> Date </mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label> Adversary </mat-label>
+                    <input matInput formControlName="adversary">
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Create</button>
+        </mat-card-actions>
+    </mat-card>
+</form>
