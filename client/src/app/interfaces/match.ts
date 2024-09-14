@@ -5,6 +5,6 @@ export interface Match {
     sets: Set[];
     isLive: boolean;
     win: boolean;
-    matchDate: Date;
+    matchDate: Date | string;
     adversary: string;
 }

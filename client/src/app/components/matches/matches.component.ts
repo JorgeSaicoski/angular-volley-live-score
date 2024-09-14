@@ -59,7 +59,8 @@ export class MatchesComponent implements AfterViewInit{
     const newMatch = await firstValueFrom(newMatch$) as Partial<Match>
 
     if (newMatch.adversary && newMatch.matchDate){
-      this.matches.push(newMatch as Match); 
+      const newMatchDB = await this.matchesService.createMatch(newMatch)
+      this.matches.push(newMatchDB as Match); 
       this.dataSource.data = this.matches;  
 
     }
