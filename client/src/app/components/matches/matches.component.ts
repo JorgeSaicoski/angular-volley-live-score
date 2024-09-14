@@ -7,7 +7,7 @@ import { Match } from '@interfaces/match';
 import { MatchesService } from '@service/matches.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateComponent } from './create/create.component';
-import { first, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 
 
@@ -55,10 +55,15 @@ export class MatchesComponent implements AfterViewInit{
   }
 
   async openCreateMatch(){
-    console.log("openDialog")
-    const newMatch$ = this.dialog.open(CreateComponent).afterClosed();
-    console.log(await firstValueFrom(newMatch$))
-    //this.matches.push(await firstValueFrom(newMatch$)) 
+    const newMatch$= this.dialog.open(CreateComponent).afterClosed();
+    const newMatch = await firstValueFrom(newMatch$) as Partial<Match>
+
+    if (newMatch.adversary && newMatch.matchDate){
+      this.matches.push(newMatch as Match); 
+      this.dataSource.data = this.matches;  
+
+    }
+
   }
 
 

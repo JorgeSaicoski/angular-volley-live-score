@@ -15,8 +15,8 @@ export class MatchesService {
 
   env = environment
 
-  async createMatch(course: Partial<Match>) : Promise<Match> {
-    const match$ = this.http.post<Match>(`${this.env.apiRoot}/matches`, course)
+  async createMatch(match: Partial<Match>) : Promise<Match> {
+    const match$ = this.http.post<Match>(`${this.env.apiRoot}/matches`, match)
     return firstValueFrom(match$);
   }
 

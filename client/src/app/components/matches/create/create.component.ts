@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Match } from '@interfaces/match';
 
 @Component({
   selector: 'app-create',
@@ -24,18 +26,24 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './create.component.scss'
 })
 export class CreateComponent {
+  dialogRef = inject(MatDialogRef<CreateComponent>)
   matchForm: FormGroup
   constructor(private fb: FormBuilder){
     this.matchForm = this.fb.group({
-      date: [''],
+      matchDate: [''],
       adversary: ['']
     })
   }
 
   createMatch(){
     if (this.matchForm.valid){
-      console.log(this.matchForm.value)
+      const match: Partial<Match> = this.matchForm.value
+      this.dialogRef.close(match)
+      console.log("send")
     }
+  }
+  onCancel(){
+    this.dialogRef.close(null)
   }
 
 }
