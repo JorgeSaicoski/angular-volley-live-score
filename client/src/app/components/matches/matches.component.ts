@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -21,7 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class MatchesComponent implements AfterViewInit{
 
-  matches: Match[] = [];
+  matches = signal<Match[]>([]);
 
   displayedColumns: string[] = ['date', 'adversary', 'result'];
 
@@ -35,7 +35,7 @@ export class MatchesComponent implements AfterViewInit{
     this.dataSource.paginator = this.paginator
   }
   
-  dataSource = new MatTableDataSource<Match>(this.matches)
+  dataSource = new MatTableDataSource<Match>(this.matches())
 
   getResult(sets: { win: boolean }[]): string {
     const wins = sets.filter(set => set.win).length;
@@ -47,8 +47,7 @@ export class MatchesComponent implements AfterViewInit{
   async loadMatches() {
     try {
       const matches = await this.matchesService.getMatches(0, 10); 
-      console.log(matches)
-      this.matches = matches;
+      this.matches.set(matches);
       this.dataSource.data = matches; 
     } catch (error) {
       console.error('Error loading matches', error);
@@ -61,8 +60,8 @@ export class MatchesComponent implements AfterViewInit{
 
     if (newMatch.adversary && newMatch.matchDate){
       const newMatchDB = await this.matchesService.createMatch(newMatch)
-      this.matches.push(newMatchDB as Match); 
-      this.dataSource.data = this.matches;  
+      this.matches.update(matches => [...matches, newMatchDB as Match]); 
+      this.dataSource.data = this.matches();  
 
     }
 

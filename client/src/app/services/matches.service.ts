@@ -28,8 +28,6 @@ export class MatchesService {
   async getMatches(pageIndex:number, pageSize:number): Promise<Match[]>{
     const matches$ = this.http.get<Match[]>(`${this.env.apiRoot}matches?page=${pageIndex}&size=${pageSize}`)
     const response = await firstValueFrom(matches$)
-    console.log('response')
-    console.log(response)
     return response
   }
   async getMatchesById(matchId:string): Promise<Match> {

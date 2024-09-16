@@ -8,7 +8,7 @@
 
     </mat-card-header>
     <mat-card-content>
-        <table mat-table [dataSource]="matches" class="mat-elevation-z8">
+        <table mat-table [dataSource]="matches()" class="mat-elevation-z8">
 
             <!-- Date Column -->
             <ng-container matColumnDef="date">
