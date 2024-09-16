@@ -20,18 +20,17 @@ export class MatchesService {
       match.matchDate = match.matchDate.toISOString(); 
     }
 
-    console.log(match)
     const match$ = this.http.post<Match>(`${this.env.apiRoot}matches`, match)
 
     return firstValueFrom(match$);
   }
 
   async getMatches(pageIndex:number, pageSize:number): Promise<Match[]>{
-    const matches$ = this.http.get<GetMatchesResponse>(`${this.env.apiRoot}matches?page=${pageIndex}&size=${pageSize}`)
+    const matches$ = this.http.get<Match[]>(`${this.env.apiRoot}matches?page=${pageIndex}&size=${pageSize}`)
     const response = await firstValueFrom(matches$)
     console.log('response')
     console.log(response)
-    return response.matches
+    return response
   }
   async getMatchesById(matchId:string): Promise<Match> {
     const match$ = this.http.get<Match>(`${this.env.apiRoot}matches/${matchId}`);

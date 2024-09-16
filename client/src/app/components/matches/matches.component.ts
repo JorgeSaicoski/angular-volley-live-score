@@ -47,6 +47,7 @@ export class MatchesComponent implements AfterViewInit{
   async loadMatches() {
     try {
       const matches = await this.matchesService.getMatches(0, 10); 
+      console.log(matches)
       this.matches = matches;
       this.dataSource.data = matches; 
     } catch (error) {
