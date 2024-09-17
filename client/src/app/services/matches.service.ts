@@ -25,12 +25,15 @@ export class MatchesService {
     return firstValueFrom(match$);
   }
 
-  async getMatches(pageIndex:number, pageSize:number): Promise<Match[]>{
-    const matches$ = this.http.get<Match[]>(`${this.env.apiRoot}matches?page=${pageIndex}&size=${pageSize}`)
-    const response = await firstValueFrom(matches$)
-    response.forEach(match =>{
+  async getMatches(pageIndex:number, pageSize:number): Promise<GetMatchesResponse>{
+    const response$ = this.http.get<GetMatchesResponse>(`${this.env.apiRoot}matches?page=${pageIndex}&size=${pageSize}`)
+    const response = await firstValueFrom(response$) 
+    console.log(response)
+ 
+    response.matches.forEach(match =>{
       match.matchDate = new Date(match.matchDate)
     })
+       
     return response
   }
   async getMatchesById(matchId:string): Promise<Match> {

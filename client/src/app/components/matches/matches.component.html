@@ -34,7 +34,9 @@
         </table>
 
         <!-- Paginator -->
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+        <mat-paginator 
+            [pageSizeOptions]="[5, 10, 20]"
+            [length] = "5"
             showFirstLastButtons
         ></mat-paginator>
 

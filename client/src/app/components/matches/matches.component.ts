@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, inject, signal, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Match } from '@interfaces/match';
 import { MatchesService } from '@service/matches.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,8 +31,13 @@ export class MatchesComponent implements AfterViewInit{
   matchesService = inject(MatchesService)
 
   ngAfterViewInit(){
-    this.loadMatches();
+    this.loadMatches(0, 5);
     this.dataSource.paginator = this.paginator
+
+    this.paginator?.page.subscribe((event:PageEvent)=>{
+      this.loadMatches(event.pageIndex, event.pageSize);
+      this.dataSource.paginator = this.paginator
+    })
   }
   
   dataSource = new MatTableDataSource<Match>(this.matches())
@@ -44,12 +49,11 @@ export class MatchesComponent implements AfterViewInit{
     return wins > losses ? `win by ${wins}x${losses}` : `lose by ${losses}x${wins}`;
   }
 
-  async loadMatches() {
+  async loadMatches(page:number, size:number) {
     try {
-      const matches = await this.matchesService.getMatches(0, 5); 
-      this.matches.set(matches);
-      this.dataSource.data = matches; 
-      console.log(matches)
+      const response = await this.matchesService.getMatches(page, size); 
+      this.matches.set(response.matches);
+      this.dataSource.data = response.matches;
     } catch (error) {
       console.error('Error loading matches', error);
     }
@@ -65,9 +69,12 @@ export class MatchesComponent implements AfterViewInit{
       this.dataSource.data = this.matches();  
 
     }
-
   }
 
 
 
+
+
 }
+
+
