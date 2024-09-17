@@ -13,7 +13,7 @@
             <!-- Date Column -->
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef>Date</th>
-                <th mat-header-cell *matCellDef="let match">{{match.date | date}}</th>
+                <th mat-header-cell *matCellDef="let match">{{match.matchDate | date: 'shortDate'}}</th>
             </ng-container>
 
             <!-- Adversary Column -->

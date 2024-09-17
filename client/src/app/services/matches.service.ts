@@ -28,6 +28,9 @@ export class MatchesService {
   async getMatches(pageIndex:number, pageSize:number): Promise<Match[]>{
     const matches$ = this.http.get<Match[]>(`${this.env.apiRoot}matches?page=${pageIndex}&size=${pageSize}`)
     const response = await firstValueFrom(matches$)
+    response.forEach(match =>{
+      match.matchDate = new Date(match.matchDate)
+    })
     return response
   }
   async getMatchesById(matchId:string): Promise<Match> {
