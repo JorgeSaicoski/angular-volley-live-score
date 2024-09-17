@@ -22,6 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class MatchesComponent implements AfterViewInit{
 
   matches = signal<Match[]>([]);
+  length = signal<number>(0)
 
   displayedColumns: string[] = ['date', 'adversary', 'result'];
 
@@ -54,6 +55,8 @@ export class MatchesComponent implements AfterViewInit{
       const response = await this.matchesService.getMatches(page, size); 
       this.matches.set(response.matches);
       this.dataSource.data = response.matches;
+      this.length.set(response.count)
+      
     } catch (error) {
       console.error('Error loading matches', error);
     }
@@ -70,11 +73,6 @@ export class MatchesComponent implements AfterViewInit{
 
     }
   }
-
-
-
-
-
 }
 
 
